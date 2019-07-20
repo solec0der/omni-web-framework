@@ -4,36 +4,34 @@ namespace Omni;
 
 class Route {
 
-    private $methods;
+    protected $methods;
 
-    private $pattern;
+    protected $pattern;
 
-    private $callable;
+    protected $callable;
 
-    public function __construct(array $methods, string $pattern, $callable) {
+    protected $identifier;
+
+    public function __construct(array $methods, string $pattern, $callable, $identifier = 0) {
         $this->methods = $methods;
         $this->pattern = $pattern;
         $this->callable = $callable;
+        $this->identifier = $identifier;
     }
-
-    /**
-     * @return array
-     */
+    
     public function getMethods(): array {
         return $this->methods;
     }
 
-    /**
-     * @return string
-     */
     public function getPattern(): string {
         return $this->pattern;
     }
 
-    /**
-     * @return mixed
-     */
     public function getCallable() {
         return $this->callable;
+    }
+    
+    public function getIdentifier() {
+        return $this->identifier;
     }
 }
