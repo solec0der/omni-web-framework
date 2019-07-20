@@ -9,6 +9,9 @@ class App {
     private $container;
 
     public function __construct() {
+        
+        // Initialise Container Object
+        $this->container = new Container();
     }
 
     public function get($pattern, $callable) {
@@ -40,6 +43,10 @@ class App {
     }
 
     public function map(array $methods, $pattern, $callable) {
-                
+        return $this->container->get('router')->map($methods, $pattern, $callable);
+
+        // TODO: This method underneath will come in handy whilst I'm creating the closures for the routes.
+        // call_user_func_array($callable, ['test braten text', 'test braten text 2']);        
+    
     }
 }

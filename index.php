@@ -4,6 +4,6 @@ require_once "autoload.php";
 
 $app = new \Omni\App();
 
-$app->get('/', function() {
+$app->get('/test', function($request, $response) {
 
 });

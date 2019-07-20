@@ -4,6 +4,8 @@ namespace Omni;
 
 class Router {
 
+    protected $container;
+
     protected $basePath = '';
 
     protected $routes = [];
@@ -33,7 +35,16 @@ class Router {
     protected function createRoute($methods, $pattern, $callable): Route {
         $route = new Route($methods, $pattern, $callable, $this->routeCounter);
 
-        // TODO: When implemented, the container has to be set to the route.
+        $route->setContainer($this->container);
+
         return $route;
+    }
+    
+    public function getContainer() {
+        return $this->container;
+    }
+
+    public function setContainer(Container $container) {
+        $this->container = $container;
     }
 }
