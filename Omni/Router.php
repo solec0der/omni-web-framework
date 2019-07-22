@@ -22,14 +22,19 @@ class Router {
             echo "Pattern has to be a string";
         }
 
-        $methods = array_map('strtoupper', $methods);
+        if ($this->getRouteByPattern($pattern) !== null) {
+            echo "route already exists"; 
+            die();
+        } else {
+            $methods = array_map('strtoupper', $methods);
 
-        $route = $this->createRoute($methods, $pattern, $callable);
-        
-        $this->routes[$route->getIdentifier()] = $route;
-        $this->routeCounter++;
+            $route = $this->createRoute($methods, $pattern, $callable);
 
-        return $route;
+            $this->routes[$route->getIdentifier()] = $route;
+            $this->routeCounter++;
+
+            return $route;
+        }
     }
 
     protected function createRoute($methods, $pattern, $callable): Route {
@@ -39,12 +44,42 @@ class Router {
 
         return $route;
     }
-    
+
     public function getContainer() {
         return $this->container;
     }
 
     public function setContainer(Container $container) {
         $this->container = $container;
+    }
+
+    public function setBasePath(string $basePath) {
+        $this->basePath = $basePath;
+    }
+    
+    public function getBasePath(): string {
+        return $this->basePath;
+    }
+
+    public function getRouteByPattern(string $pattern) {
+        
+        if (!is_string($pattern)) {
+            echo "Pattern has to be a string";
+        }
+
+        // Start search of Route
+        foreach ($this->routes as $route) {
+
+            if ($route->getPattern() === $pattern) {
+                return $route;
+            }
+
+        }
+
+        return null;
+    }
+
+    public function getUrlParameters($routeIdentifier) {
+        
     }
 }

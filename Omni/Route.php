@@ -14,11 +14,14 @@ class Route {
 
     protected $container;
 
-    public function __construct(array $methods, string $pattern, $callable, $identifier = 0) {
+    protected $params;
+
+    public function __construct(array $methods, string $pattern, $callable, $identifier = 0, $params = []) {
         $this->methods = $methods;
         $this->pattern = $pattern;
         $this->callable = $callable;
         $this->identifier = $identifier;
+        $this->params = $params;
     }
     
     public function getMethods(): array {
@@ -39,6 +42,10 @@ class Route {
 
     public function getContainer() {
         return $this->container;
+    }
+    
+    public function getParams() {
+        return $this->params;
     }
 
     public function setContainer(Container $container) {

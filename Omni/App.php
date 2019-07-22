@@ -9,7 +9,7 @@ class App {
     private $container;
 
     public function __construct() {
-        
+
         // Initialise Container Object
         $this->container = new Container();
     }
@@ -25,7 +25,7 @@ class App {
     public function put($pattern, $callable) {
         return $this->map(['PUT'], $pattern, $callable);
     }
-    
+
     public function patch($pattern, $callable) {
         return $this->map(['PATCH'], $pattern, $callable);
     }
@@ -33,11 +33,11 @@ class App {
     public function delete($pattern, $callable) {
         return $this->map(['DELETE'], $pattern, $callable);
     }
-    
+
     public function options($pattern, $callable) {
         return $this->map(['OPTIONS'], $pattern, $callable);
     }
-    
+
     public function any($pattern, $callable) {
         return $this->map(['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'], $pattern, $callable);
     }
@@ -47,6 +47,33 @@ class App {
 
         // TODO: This method underneath will come in handy whilst I'm creating the closures for the routes.
         // call_user_func_array($callable, ['test braten text', 'test braten text 2']);        
-    
+
+    }
+
+    public function setBasePath(string $basePath = '/') {
+        $this->container->get('router')->setBasePath($basePath);
+    }
+
+    public function run() {
+        // Get the request URL
+        $pattern = $this->getRequestURLPattern();
+
+        $route = $this->container->get('router')->getRouteByPattern($pattern);
+        $this->executeRoute($route);
+    }
+
+    private function getRequestURLPattern() {
+        return $_SERVER['REQUEST_URI'];
+    }
+
+    private function executeRoute(Route $route) {
+
+        call_user_func_array(
+            $route->getCallable(),
+            [
+                $this->container->get('request'),
+                $this->container->get('response')
+            ]);
+
     }
 }
